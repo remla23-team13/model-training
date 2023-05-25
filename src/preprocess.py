@@ -1,10 +1,14 @@
 import pickle
+import pandas as pd
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 import re
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
+from joblib import dump
 
+def load_dataset(data_path):
+    return pd.read_csv(data_path, delimiter='\t', quoting=3)
 
 def get_stopwords():
     nltk.download('stopwords')
@@ -41,7 +45,16 @@ def preprocess(dataset):
     y = dataset.iloc[:, -1].values
 
     # Saving BoW dictionary to later use in prediction
-    bow_path = '../models/mdc1_BoW_Sentiment_Model.pkl'
-    pickle.dump(cv, open(bow_path, "wb"))
-
+    bow_path = 'preprocessor/preprocessor.joblib'
+    dump(cv, bow_path)
+    preprocessed_data_path = 'data/preprocessed_data.joblib'
+    dump(X, preprocessed_data_path)
     return X, y
+
+
+def main():
+    dataset = load_dataset('data/RestaurantReviews.tsv')
+    preprocess(dataset)
+
+if __name__ == "__main__":
+    main()
