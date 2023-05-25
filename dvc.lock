@@ -1,0 +1,44 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python src/get_data.py
+    deps:
+    - path: src/get_data.py
+      md5: 150662b687546d4aac53543b8e66ba58
+      size: 182
+    outs:
+    - path: data/RestaurantReviews.tsv
+      md5: 102f1f4193e0bdebdd6cce7f13e0a839
+      size: 54686
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/RestaurantReviews.tsv
+      md5: 102f1f4193e0bdebdd6cce7f13e0a839
+      size: 54686
+    - path: src/preprocess.py
+      md5: 84b477aa25cdd9e24a529fc32b6cb598
+      size: 1508
+    outs:
+    - path: data/preprocessed_data.joblib
+      md5: b9ebf24cdaf8211af925afe954c6ecf4
+      size: 10224225
+    - path: preprocessor/preprocessor.joblib
+      md5: 18439f004c0095966a8679b0d9612c2a
+      size: 39826
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/RestaurantReviews.tsv
+      md5: 102f1f4193e0bdebdd6cce7f13e0a839
+      size: 54686
+    - path: data/preprocessed_data.joblib
+      md5: b9ebf24cdaf8211af925afe954c6ecf4
+      size: 10224225
+    - path: src/train.py
+      md5: 8a88c6bdfd28c51b88c853e0f00dee71
+      size: 1008
+    outs:
+    - path: models/model.joblib
+      md5: 2d5a3a7cc92e92406be4edf52dd19be0
+      size: 46215

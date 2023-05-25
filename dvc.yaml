@@ -1,0 +1,23 @@
+stages:
+  get_data:
+    cmd: python src/get_data.py
+    deps:
+    - src/get_data.py
+    outs:
+    - data/RestaurantReviews.tsv
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - data/RestaurantReviews.tsv
+    - src/preprocess.py
+    outs:
+    - data/preprocessed_data.joblib
+    - preprocessor/preprocessor.joblib
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/RestaurantReviews.tsv
+    - data/preprocessed_data.joblib
+    - src/train.py
+    outs:
+    - models/model.joblib
