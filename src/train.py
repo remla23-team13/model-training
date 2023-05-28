@@ -1,11 +1,12 @@
-from sklearn.metrics import confusion_matrix, accuracy_score
+"""Training phase of the model training pipeline"""
 from joblib import dump, load
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from preprocess import load_dataset
 
 def train():
+    """Train the model and save it"""
     print("Training model..")
 
     dataset = load_dataset('data/RestaurantReviews.tsv')
@@ -20,8 +21,8 @@ def train():
 
     y_pred = classifier.predict(X_test)
 
-    cm = confusion_matrix(y_test, y_pred)
-    print("Confusion matrix:", cm)
+    c_matrix = confusion_matrix(y_test, y_pred)
+    print("Confusion matrix:", c_matrix)
 
     accuracy = accuracy_score(y_test, y_pred)
 
