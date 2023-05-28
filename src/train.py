@@ -1,9 +1,11 @@
 """Training phase of the model training pipeline"""
 from joblib import dump, load
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import LinearSVC
 from preprocess import load_dataset
+import json
 
 def train():
     """Train the model and save it"""
@@ -21,16 +23,23 @@ def train():
 
     y_pred = classifier.predict(X_test)
 
-    c_matrix = confusion_matrix(y_test, y_pred)
-    print("Confusion matrix:", c_matrix)
-
     accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
 
-    print("Accuracy: ", accuracy)
+    metrics = {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall
+    }
+
+    with open('metrics/metrics.json', 'w') as outfile:
+        json.dump(metrics, outfile)
 
     print("Saving model..")
-    # Exporting NB Classifier to later use in prediction
+
     dump(classifier, 'models/model.joblib')
+
 
 if __name__ == "__main__":
     train()

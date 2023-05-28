@@ -21,3 +21,5 @@ stages:
     - src/train.py
     outs:
     - models/model.joblib
+    metrics:
+    - metrics/metrics.json
