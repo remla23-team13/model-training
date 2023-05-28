@@ -1,16 +1,18 @@
-import pickle
+"""Preprocessing phase of the model training pipeline"""
+import re
 import pandas as pd
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
-import re
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
 from joblib import dump
 
 def load_dataset(data_path):
+    """Load dataset from data_path"""
     return pd.read_csv(data_path, delimiter='\t', quoting=3)
 
 def get_stopwords():
+    """Obtain the list of stopwords"""
     nltk.download('stopwords')
 
     all_stopwords = stopwords.words('english')
@@ -20,16 +22,17 @@ def get_stopwords():
 
 
 def get_corpus(dataset):
+    """produce the corpus from the dataset by applying preprocessing steps"""
     all_stopwords = get_stopwords()
     corpus = []
 
-    ps = PorterStemmer()
+    porter_stemmer = PorterStemmer()
 
     for i in range(0, 900):
         review = re.sub('[^a-zA-Z]', ' ', dataset['Review'][i])
         review = review.lower()
         review = review.split()
-        review = [ps.stem(word)
+        review = [porter_stemmer.stem(word)
                   for word in review if not word in set(all_stopwords)]
         review = ' '.join(review)
         corpus.append(review)
@@ -37,22 +40,25 @@ def get_corpus(dataset):
 
 
 def preprocess(dataset):
+    """Preprocess the dataset and save it"""
+
     print("Preprocessing data...")
     corpus = get_corpus(dataset)
 
-    cv = CountVectorizer(max_features=1420)
-    X = cv.fit_transform(corpus).toarray()
+    count_vectorizer = CountVectorizer(max_features=1420)
+    X = count_vectorizer.fit_transform(corpus).toarray()
     y = dataset.iloc[:, -1].values
 
     # Saving BoW dictionary to later use in prediction
     bow_path = 'preprocessor/preprocessor.joblib'
-    dump(cv, bow_path)
+    dump(count_vectorizer, bow_path)
     preprocessed_data_path = 'data/preprocessed_data.joblib'
     dump(X, preprocessed_data_path)
     return X, y
 
 
 def main():
+    """ Load the dataset and preprocess it """
     dataset = load_dataset('data/RestaurantReviews.tsv')
     preprocess(dataset)
 
