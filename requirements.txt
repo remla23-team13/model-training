@@ -5,8 +5,8 @@ scipy==1.6.2
 matplotlib==3.4.1
 scikit-learn==0.24.1
 markupsafe==2.0.1
-dvc
-dvc-gdrive
-pylint
-dslinter
-gdown
+dvc==2.58.2
+dvc-gdrive==2.19.2
+pylint==2.12.2
+dslinter==2.0.9
+gdown==4.7.1
