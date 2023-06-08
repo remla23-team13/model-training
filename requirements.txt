@@ -10,3 +10,4 @@ dvc-gdrive
 pylint
 dslinter
 gdown
+pytest
