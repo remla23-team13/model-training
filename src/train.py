@@ -1,11 +1,11 @@
 """Training phase of the model training pipeline"""
+import json
 from joblib import dump, load
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import LinearSVC
 from preprocess import load_dataset
-import json
+
 
 def train():
     """Train the model and save it"""
@@ -33,7 +33,7 @@ def train():
         "recall": recall
     }
 
-    with open('metrics/metrics.json', 'w') as outfile:
+    with open('metrics/metrics.json', 'w', encoding="utf-8") as outfile:
         json.dump(metrics, outfile)
 
     print("Saving model..")
