@@ -1,10 +1,7 @@
 # Model-Training
-This repo serves as the backend of the restaurant review project for the [Release Engineering for Machine Learning Application](https://se.ewi.tudelft.nl/remla/) course of the TU Delft.
-You can find the frontend [here](https://github.com/remla23-team13/app) See [operation](https://github.com/remla23-team13/operation) for a more detailed view of how the project is setup.
-The project uses the [DVC](https://dvc.org/) framework for it's machine learning pipeline. 
-The service has several features:
-* 
-
+This repo trains the models used in the restaurant review project for the [Release Engineering for Machine Learning Application](https://se.ewi.tudelft.nl/remla/) course of the TU Delft.
+See [operation](https://github.com/remla23-team13/operation) for a more detailed view of how the project is setup.
+The repository uses the [DVC](https://dvc.org/) framework for its machine learning pipeline.
 
 ## Running the pipeline
 We advise you to use a virtual environment and to use Python v3.9.
