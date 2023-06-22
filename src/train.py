@@ -9,36 +9,55 @@ from sklearn.naive_bayes import GaussianNB
 from preprocess import load_dataset
 
 
-def train():
-    """Train the model and save it"""
-    print("Training model..")
+classifier = LinearSVC()
 
-    dataset = load_dataset("data/RestaurantReviews.tsv")
-    X = load("data/preprocessed_data.joblib")
+def save_metrics(metrics):
+    """Save the metrics"""
+    with open('metrics/metrics.json', 'w') as outfile:
+        json.dump(metrics, outfile)
+
+def save_model(model):
+    """Save the model"""
+    print("Saving model..")
+    dump(model, 'models/model.joblib')
+
+def load_preprocessed_data(preprocessed_data_path):
+    dataset = load_dataset('data/RestaurantReviews.tsv')
+    X = load(preprocessed_data_path)
     y = dataset.iloc[:, -1].values
+    return X, y
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.20, random_state=0
-    )
+def create_split(X, y, random_state=0):
+    """Create a train/test split of the data"""
+    return train_test_split(
+        X, y, test_size=0.20, random_state=random_state)
 
-    classifier = GaussianNB()
+def train(X_train, y_train, classifier=classifier):
+    """Train the model"""
+
     classifier.fit(X_train, y_train)
+    return classifier
 
-    y_pred = classifier.predict(X_test)
+def test(X_test, y_test, model):
+    """Test the model"""
+
+    y_pred = model.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
 
-    metrics = {"accuracy": accuracy, "precision": precision, "recall": recall}
-
-    with open("metrics/metrics.json", "w", encoding="utf-8") as outfile:
-        json.dump(metrics, outfile)
-
-    print("Saving model..")
-
-    dump(classifier, "models/model.joblib")
-
+    metrics = {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall
+    }
+    return metrics
 
 if __name__ == "__main__":
-    train()
+    X, y = load_preprocessed_data('data/preprocessed_data.joblib')
+    X_train, X_test, y_train, y_test = create_split(X, y)
+    model = train(X_train, y_train)
+    metrics = test(X_test, y_test, model)
+    save_metrics(metrics)
+    save_model(model)
