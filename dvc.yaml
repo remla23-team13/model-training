@@ -12,7 +12,6 @@ stages:
     - src/preprocess.py
     outs:
     - data/preprocessed_data.joblib
-    - preprocessor/preprocessor.joblib
   train:
     cmd: python src/train.py
     deps:
