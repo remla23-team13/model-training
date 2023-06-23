@@ -4,8 +4,8 @@ stages:
     cmd: python src/get_data.py
     deps:
     - path: src/get_data.py
-      md5: 04ed409e452fc352c2112dd38bb65092
-      size: 286
+      md5: 5f417726cb30c73daa15af49c97e8175
+      size: 263
     outs:
     - path: data/RestaurantReviews.tsv
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
@@ -17,14 +17,14 @@ stages:
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
       size: 54686
     - path: src/preprocess.py
-      md5: b5235dac348080edb7877c26e039b403
-      size: 1866
+      md5: 14d659f86cc5a1df911f779a059e7bdd
+      size: 2052
     outs:
     - path: data/preprocessed_data.joblib
       md5: b9ebf24cdaf8211af925afe954c6ecf4
       size: 10224225
     - path: preprocessor/preprocessor.joblib
-      md5: f6e22e7b0a5d7af52962652f04eb2869
+      md5: d667dca7fc34c648564ae00d9f04babc
       size: 39827
   train:
     cmd: python src/train.py
@@ -36,12 +36,12 @@ stages:
       md5: b9ebf24cdaf8211af925afe954c6ecf4
       size: 10224225
     - path: src/train.py
-      md5: c0db9e784e68f9b40d9e2c69376c8001
-      size: 1774
+      md5: 67e3dd961ff299e4296611dc2e5e0a4e
+      size: 2008
     outs:
     - path: metrics/metrics.json
       md5: 5d275fb7aaeeadcc095a58493a44be35
       size: 95
     - path: models/model.joblib
-      md5: 2dbe5f4485dc8cc33a2654fd3b4984d6
+      md5: ac12733d28be029d1ab604cbf96c7182
       size: 12156
