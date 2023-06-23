@@ -1,0 +1,23 @@
+rules:
+    disabled: [dependency-management]
+    custom: []
+git:
+    maxFileSize: 10000000
+code-quality:
+    linters:
+        - pylint
+        - mypy
+        - black
+        - isort
+testing:
+    report: "tests-report.xml"
+    targets:
+        minimum: 1
+        ratio:
+            tests: 1
+            other: 4
+    coverage:
+        report: "coverage.xml"
+        targets:
+            line: 50
+
