@@ -1,4 +1,6 @@
 # Model-Training
+![testing_badge](https://github.com/remla23-team13/model-training/actions/workflows/CI.yml/badge.svg)
+
 This repo trains the models used in the restaurant review project for the [Release Engineering for Machine Learning Application](https://se.ewi.tudelft.nl/remla/) course of the TU Delft.
 See [operation](https://github.com/remla23-team13/operation) for a more detailed view of how the project is setup.
 The repository uses the [DVC](https://dvc.org/) framework for its machine learning pipeline.
