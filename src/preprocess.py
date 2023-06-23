@@ -1,5 +1,6 @@
 """Preprocessing phase of the model training pipeline"""
 import re
+from typing import Any
 
 import nltk
 import pandas as pd
@@ -9,22 +10,22 @@ from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-def load_dataset(data_path):
+def load_dataset(data_path: str) -> pd.DataFrame:
     """Load dataset from data_path"""
     return pd.read_csv(data_path, delimiter="\t", quoting=3)
 
 
-def get_stopwords():
+def get_stopwords() -> list[str]:
     """Obtain the list of stopwords"""
     nltk.download("stopwords")
 
-    all_stopwords = stopwords.words("english")
+    all_stopwords: list[str] = stopwords.words("english")
     all_stopwords.remove("not")
 
     return all_stopwords
 
 
-def get_corpus(dataset):
+def get_corpus(dataset: pd.DataFrame) -> list[str]:
     """produce the corpus from the dataset by applying preprocessing steps"""
     all_stopwords = get_stopwords()
     corpus = []
@@ -34,18 +35,18 @@ def get_corpus(dataset):
     for i in range(0, 900):
         review = re.sub("[^a-zA-Z]", " ", dataset["Review"][i])
         review = review.lower()
-        review = review.split()
-        review = [
+        review_list = review.split()
+        review_list = [
             porter_stemmer.stem(word)
-            for word in review
+            for word in review_list
             if not word in set(all_stopwords)
         ]
-        review = " ".join(review)
+        review = " ".join(review_list)
         corpus.append(review)
     return corpus
 
 
-def preprocess(dataset):
+def preprocess(dataset: pd.DataFrame) -> tuple[Any, Any]:
     """Preprocess the dataset and save it"""
 
     print("Preprocessing data...")
@@ -63,7 +64,7 @@ def preprocess(dataset):
     return X, y
 
 
-def main():
+def main() -> None:
     """Load the dataset and preprocess it"""
     dataset = load_dataset("data/RestaurantReviews.tsv")
     preprocess(dataset)
