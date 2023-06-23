@@ -1,6 +1,6 @@
-name: Pylint
+name: Linting and testing
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
