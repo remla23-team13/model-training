@@ -1,6 +1,7 @@
 """Different tests"""
 import json
 
+import evaluation
 import train as training
 
 
@@ -16,6 +17,6 @@ def test_nondeterminism_robustness() -> None:
     for i in range(20):
         X_train, X_test, y_train, y_test = training.create_split(X, y, random_state=i)
         trained_model = training.train(X_train, y_train)
-        metrics = training.test(X_test, y_test, trained_model)
+        metrics = evaluation.test(X_test, y_test, trained_model)
         model_accuracy_ = metrics["accuracy"]
         assert abs(model_accuracy - model_accuracy_) < 0.05

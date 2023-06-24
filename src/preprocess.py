@@ -19,7 +19,7 @@ def preprocess(dataset: pd.DataFrame) -> tuple[Any, Any]:
     X, y = preprocessor.preprocess_dataset(dataset)
 
     preprocessed_data_path = "data/preprocessed_data.joblib"
-    dump(X, preprocessed_data_path)
+    dump([X, y], preprocessed_data_path)
     return X, y
 
 
