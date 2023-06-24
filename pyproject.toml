@@ -1,0 +1,9 @@
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+exclude = ["venv"]
+ignore_missing_imports = true
+
+[tool.bandit.assert_used]
+skips = ['tests/', '*/test_*.py']
