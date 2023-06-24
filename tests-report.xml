@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="1.776" timestamp="2023-06-24T16:05:11.963361" hostname="ideki"><testcase classname="tests.test_non_determinism" name="test_nondeterminism_robustness" time="0.716" /></testsuite></testsuites>

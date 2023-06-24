@@ -15,10 +15,16 @@ stages:
   train:
     cmd: python src/train.py
     deps:
-    - data/RestaurantReviews.tsv
     - data/preprocessed_data.joblib
     - src/train.py
     outs:
     - models/model.joblib
+    - data/test_data.joblib
+  evaluate:
+    cmd: python src/evaluation.py
+    deps:
+    - data/test_data.joblib
+    - models/model.joblib
+    - src/evaluation.py
     metrics:
     - metrics/metrics.json
