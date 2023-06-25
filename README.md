@@ -19,3 +19,35 @@ For more information on DVC either check out the documentation or take a look at
 For this step it is required to have a Google Drive account. 
 It's possible to pull all the pre-produces artifacts from the remote storage with `dvc pull`. 
 When you execute this command, you will be asked to authenticate with your Google Drive account.
+
+## Running experiments
+DVC allows to make modifications to the pipeline and compare the resulting metrics against the current baseline.
+To do so, you could modify one or more of the phases in the pipeline and run the command:
+```
+dvc exp run
+```
+now you can observe and compare the results of your experiment:
+```
+dvc exp show
+```
+
+## Running tests
+The tests rely on files produced by the pipeline, therefore ensure to run the ```dvc repro``` or ```dvc pull``` command before running them.
+Afterwards, you can run the following command:
+```
+pytest
+```
+
+## Code quality and linting
+This repository uses [mllint](https://github.com/bvobart/mllint) to assess the quality of the project.
+It will run different kind of linting tools on the code and report the results, ensure that the tests pass and many other things (check the mllint
+documentation for more information).
+To run mllint, execute the following commands:
+```
+pytest --junitxml=tests-report.xml --cov=src --cov-report=xml tests/
+mllint
+```
+if you want to change the name of the test report file, ensure to update the field 'report'
+in the file `.mllint.yaml` accordingly.
+## Project structure
+This repository follows the [cookiecutter data science](https://drivendata.github.io/cookiecutter-data-science/#directory-structure) guidelines.
