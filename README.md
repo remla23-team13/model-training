@@ -20,7 +20,7 @@ For this step it is required to have a Google Drive account.
 It's possible to pull all the pre-produces artifacts from the remote storage with `dvc pull`. 
 When you execute this command, you will be asked to authenticate with your Google Drive account.
 
-## Running experiments
+## Tracking experiments
 DVC allows to make modifications to the pipeline and compare the resulting metrics against the current baseline.
 To do so, you could modify one or more of the phases in the pipeline and run the command:
 ```
@@ -30,6 +30,18 @@ now you can observe and compare the results of your experiment:
 ```
 dvc exp show
 ```
+it's possible to take a step further and persist experiments and associated metrics on a git branch by running the following command:
+
+```
+dvc exp branch <experiment_name> <branch_name>
+```
+Now the experiment is tracked and can be reproduced:
+```
+git checkout <branch_name>
+dvc checkout
+```
+One example of experiment that uses a random forest classifier
+can be found in the branch ```random-forest```.
 
 ## Running tests
 The tests rely on files produced by the pipeline, therefore ensure to run the ```dvc repro``` or ```dvc pull``` command before running them.
