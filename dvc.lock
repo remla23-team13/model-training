@@ -1,54 +1,54 @@
 schema: '2.0'
 stages:
   get_data:
-    cmd: python src/get_data.py
+    cmd: python src/data/get_data.py
     deps:
-    - path: src/get_data.py
-      md5: 869877afe12569092c88e1b0f52a216b
-      size: 360
+    - path: src/data/get_data.py
+      md5: 43df7e8570b228a6668015526a0babd6
+      size: 349
     outs:
-    - path: data/RestaurantReviews.tsv
+    - path: data/raw/RestaurantReviews.tsv
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
       size: 54686
   preprocess:
-    cmd: python src/preprocess.py
+    cmd: python src/features/preprocess.py
     deps:
-    - path: data/RestaurantReviews.tsv
+    - path: data/raw/RestaurantReviews.tsv
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
       size: 54686
-    - path: src/preprocess.py
-      md5: 128565f30caac173410fa3ca0bfc3d2e
-      size: 813
+    - path: src/features/preprocess.py
+      md5: 4db7a6f1f3a35df2fc8ade8cb79dbf63
+      size: 827
     outs:
-    - path: data/preprocessed_data.joblib
+    - path: data/processed/preprocessed_data.joblib
       md5: fbcd6107a65b29e49003ad19df6ccf27
       size: 10231474
   train:
-    cmd: python src/train.py
+    cmd: python src/models/train.py
     deps:
-    - path: data/preprocessed_data.joblib
+    - path: data/processed/preprocessed_data.joblib
       md5: fbcd6107a65b29e49003ad19df6ccf27
       size: 10231474
-    - path: src/train.py
-      md5: c6a1e50861190829eee3eaba3b44c716
-      size: 1224
+    - path: src/models/train.py
+      md5: ff95df2ed6bb2929569a0a3159b82acf
+      size: 1239
     outs:
-    - path: data/test_data.joblib
+    - path: data/test/test_data.joblib
       md5: 7ea1beac810e98cc1e71f5206cdbfbc9
       size: 2046514
     - path: models/model.joblib
-      md5: 46a5b0561bf25b0314e7101a8b0fc2ce
+      md5: 5b1becf60bddf98c9483aa9ec421caf9
       size: 12156
   evaluate:
-    cmd: python src/evaluation.py
+    cmd: python src/models/evaluation.py
     deps:
-    - path: data/test_data.joblib
+    - path: data/test/test_data.joblib
       md5: 7ea1beac810e98cc1e71f5206cdbfbc9
       size: 2046514
     - path: models/model.joblib
-      md5: 46a5b0561bf25b0314e7101a8b0fc2ce
+      md5: 5b1becf60bddf98c9483aa9ec421caf9
       size: 12156
-    - path: src/evaluation.py
+    - path: src/models/evaluation.py
       md5: ea0034d22bf22dc83a8555692740a8ee
       size: 910
     outs:
