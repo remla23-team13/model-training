@@ -27,7 +27,7 @@ def test(X: Any, y: Any, model: Any) -> dict[str, float]:
 
 
 if __name__ == "__main__":
-    X_test, y_test = load("data/test_data.joblib")
+    X_test, y_test = load("data/test/test_data.joblib")
     trained_model = load("models/model.joblib")
     metrics_result = test(X_test, y_test, trained_model)
     save_metrics(metrics_result)
