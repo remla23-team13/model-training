@@ -4,8 +4,9 @@ from typing import Any
 from joblib import dump, load
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
+from sklearn.ensemble import RandomForestClassifier
 
-classifier = LinearSVC()
+classifier = RandomForestClassifier()
 
 
 def save_model(model: Any) -> None:
