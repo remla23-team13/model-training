@@ -1,8 +1,8 @@
 """Different tests"""
 import json
 
-import evaluation
-import train as training
+import src.models.train as training
+from src.models import evaluation
 
 
 def test_nondeterminism_robustness() -> None:
@@ -12,7 +12,7 @@ def test_nondeterminism_robustness() -> None:
     with open("metrics/metrics.json", encoding="utf-8") as json_file:
         metrics = json.load(json_file)
         model_accuracy = metrics["accuracy"]
-    X, y = training.load_preprocessed_data("data/preprocessed_data.joblib")
+    X, y = training.load_preprocessed_data("data/processed/preprocessed_data.joblib")
 
     for i in range(20):
         X_train, X_test, y_train, y_test = training.create_split(X, y, random_state=i)

@@ -34,10 +34,10 @@ def train(X_train: Any, y_train: Any, model: Any = classifier) -> LinearSVC:
 
 def train_main() -> None:
     """Main function for training"""
-    X, y = load_preprocessed_data("data/preprocessed_data.joblib")
+    X, y = load_preprocessed_data("data/processed/preprocessed_data.joblib")
     X_train, X_test, y_train, y_test = create_split(X, y)
     model = train(X_train, y_train)
-    dump([X_test, y_test], "data/test_data.joblib")
+    dump([X_test, y_test], "data/test/test_data.joblib")
     save_model(model)
 
 

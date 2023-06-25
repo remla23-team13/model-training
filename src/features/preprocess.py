@@ -18,14 +18,14 @@ def preprocess(dataset: pd.DataFrame) -> tuple[Any, Any]:
 
     X, y = preprocessor.preprocess_dataset(dataset)
 
-    preprocessed_data_path = "data/preprocessed_data.joblib"
+    preprocessed_data_path = "data/processed/preprocessed_data.joblib"
     dump([X, y], preprocessed_data_path)
     return X, y
 
 
 def main() -> None:
     """Load the dataset and preprocess it"""
-    dataset = load_dataset("data/RestaurantReviews.tsv")
+    dataset = load_dataset("data/raw/RestaurantReviews.tsv")
     preprocess(dataset)
 
 
