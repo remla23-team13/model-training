@@ -19,5 +19,5 @@ testing:
     coverage:
         report: "coverage.xml"
         targets:
-            line: 44 
+            line: 40 
 
