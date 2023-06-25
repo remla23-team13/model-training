@@ -4,8 +4,8 @@ stages:
     cmd: python src/get_data.py
     deps:
     - path: src/get_data.py
-      md5: 5f417726cb30c73daa15af49c97e8175
-      size: 263
+      md5: 869877afe12569092c88e1b0f52a216b
+      size: 360
     outs:
     - path: data/RestaurantReviews.tsv
       md5: 102f1f4193e0bdebdd6cce7f13e0a839
@@ -49,8 +49,8 @@ stages:
       md5: 46a5b0561bf25b0314e7101a8b0fc2ce
       size: 12156
     - path: src/evaluation.py
-      md5: 4e551b19b62d78d0b7ae2869cf429775
-      size: 916
+      md5: ea0034d22bf22dc83a8555692740a8ee
+      size: 910
     outs:
     - path: metrics/metrics.json
       md5: 5d275fb7aaeeadcc095a58493a44be35
