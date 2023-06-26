@@ -1,15 +1,19 @@
+"""Test for anomalies in feature and label distribution"""
 
-## test shape of distribution of features, should be the same in training and serving data
 import pandas as pd
 import tensorflow_data_validation as tfdv
-from src.preprocess import load_dataset
-from src.train import load_preprocessed_data, create_split
 
-def test_feature_distribution():
-    dataset = load_dataset('data/RestaurantReviews.tsv')
-    X = dataset.iloc[:, 0].values 
-    y = dataset.iloc[:, 1].values
-    X_train, X_test, _, _ = create_split(X, y)
+import src.models.train as training
+from src.features.preprocess import load_dataset
+
+
+def test_feature_distribution() -> None:
+    """Test for anomalies in feature distribution"""
+
+    dataset = load_dataset("data/RestaurantReviews.tsv")
+    X = dataset.iloc[:, 0].values.tolist()
+    y = dataset.iloc[:, 1].values.tolist()
+    X_train, X_test, _, _ = training.create_split(X, y)
     training_data = pd.DataFrame(X_train)
     serving_data = pd.DataFrame(X_test)
 
@@ -19,12 +23,16 @@ def test_feature_distribution():
     schema = tfdv.infer_schema(statistics=training_stats)
 
     skew_anomalies = tfdv.validate_statistics(
-        statistics=training_stats, schema=schema, serving_statistics=serving_stats)
-    assert tfdv.display_anomalies(skew_anomalies) == None
+        statistics=training_stats, schema=schema, serving_statistics=serving_stats
+    )
+    assert tfdv.display_anomalies(skew_anomalies) is None
 
-def test_processed_feature_distribution():
-    X, y = load_preprocessed_data('data/preprocessed_data.joblib')
-    X_train, X_test, _, _ = create_split(X, y)
+
+def test_processed_feature_distribution() -> None:
+    """Test for anomalies in proprocessed feature distribution"""
+
+    X, y = training.load_preprocessed_data("data/processed/preprocessed_data.joblib")
+    X_train, X_test, _, _ = training.create_split(X, y)
 
     training_data = pd.DataFrame(X_test)
     serving_data = pd.DataFrame(X_train)
@@ -35,14 +43,18 @@ def test_processed_feature_distribution():
     schema = tfdv.infer_schema(statistics=training_stats)
 
     skew_anomalies = tfdv.validate_statistics(
-        statistics=training_stats, schema=schema, serving_statistics=serving_stats)
-    assert tfdv.display_anomalies(skew_anomalies) == None
+        statistics=training_stats, schema=schema, serving_statistics=serving_stats
+    )
+    assert tfdv.display_anomalies(skew_anomalies) is None
 
-def test_label_distribution():
-    dataset = load_dataset('data/RestaurantReviews.tsv')
-    X = dataset.iloc[:, 0].values 
-    y = dataset.iloc[:, 1].values
-    _, _, y_train, y_test = create_split(X, y)
+
+def test_label_distribution() -> None:
+    """Test for anomalies in label feature distribution"""
+
+    dataset = load_dataset("data/RestaurantReviews.tsv")
+    X = dataset.iloc[:, 0].values.tolist()
+    y = dataset.iloc[:, 1].values.tolist()
+    _, _, y_train, y_test = training.create_split(X, y)
     training_labels = pd.DataFrame(y_train)
     serving_labels = pd.DataFrame(y_test)
 
@@ -52,12 +64,6 @@ def test_label_distribution():
     schema = tfdv.infer_schema(statistics=training_stats)
 
     skew_anomalies = tfdv.validate_statistics(
-        statistics=training_stats, schema=schema, serving_statistics=serving_stats)
-    assert tfdv.display_anomalies(skew_anomalies) == None
-
-
-
-    
-
-
-
+        statistics=training_stats, schema=schema, serving_statistics=serving_stats
+    )
+    assert tfdv.display_anomalies(skew_anomalies) is None

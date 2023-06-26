@@ -1,48 +1,54 @@
+"""Test model quality on data slices"""
 
 ## test model for implicit bias
 ## model quality on important data slices
 ## model development
-import pytest
 import json
-from src.train import load_preprocessed_data, create_split, test
+
+from sklearn.svm import LinearSVC
+
+from src.models import evaluation, train
 
 
-@pytest.fixture()
-def data():
-    yield load_preprocessed_data('data/preprocessed_data.joblib')
+def test_model_quality_positive(
+    preprocessed_data: tuple[list[int], list[int]], trained_model: LinearSVC
+) -> None:
+    """Test model quality on positive samples"""
 
-@pytest.fixture
-def trained_model():
-    from joblib import load
-    yield load('models/model.joblib')    
-
-def test_model_quality_positive(data, trained_model):
-     with open('metrics/metrics.json') as json_file:
+    with open("metrics/metrics.json", encoding="utf-8") as json_file:
         metrics = json.load(json_file)
-        model_accuracy = metrics['accuracy']
-     X,y = data
-     _, X_test, _, y_test = create_split(X, y)
-     X_postive = [review for (review, label) in zip(X_test, y_test) if label == 1 ]
-     y_postive = [1 for label in range(len(X_postive)) ]
-     metrics = test(X_postive, y_postive, trained_model)
-     metrics = test(X_test, y_test, trained_model)
+        model_accuracy = metrics["accuracy"]
 
-     model_accuracy_ = metrics['accuracy']
+    print(model_accuracy)
 
-     assert(abs(model_accuracy - model_accuracy_) < 0.1)
+    X, y = preprocessed_data
+
+    _, X_test, _, y_test = train.create_split(X, y)
+    x_postive = [review for (review, label) in zip(X_test, y_test) if label == 1]
+    y_postive = [1 for _ in range(len(x_postive))]
+    metrics = evaluation.test(x_postive, y_postive, trained_model)
+
+    model_accuracy_ = metrics["accuracy"]
+
+    assert abs(model_accuracy - model_accuracy_) < 0.1
 
 
-def test_model_quality_negative(data, trained_model):
-     with open('metrics/metrics.json') as json_file:
+def test_model_quality_negative(
+    preprocessed_data: tuple[list[int], list[int]], trained_model: LinearSVC
+) -> None:
+    """Test model quality on negative samples"""
+
+    with open("metrics/metrics.json", encoding="utf-8") as json_file:
         metrics = json.load(json_file)
-        model_accuracy = metrics['accuracy']
+        model_accuracy = metrics["accuracy"]
 
-     X, y = data
+    X, y = preprocessed_data
 
-     _, X_test, _, y_test = create_split(X, y)
-     X_negative = [review for (review, label) in zip(X_test, y_test) if label == 0 ]
-     y_negative = [0 for label in range(len(X_negative)) ]
-     metrics = test(X_negative, y_negative, trained_model)
-     model_accuracy_ = metrics['accuracy']
+    _, X_test, _, y_test = train.create_split(X, y)
+    x_negative = [review for (review, label) in zip(X_test, y_test) if label == 0]
+    y_negative = [0 for _ in range(len(x_negative))]
+    metrics = evaluation.test(x_negative, y_negative, trained_model)
 
-     assert(abs(model_accuracy - model_accuracy_) < 0.1)
+    model_accuracy_ = metrics["accuracy"]
+
+    assert abs(model_accuracy - model_accuracy_) < 0.1

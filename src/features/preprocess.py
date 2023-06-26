@@ -1,6 +1,4 @@
 """Preprocessing phase of the model training pipeline"""
-from typing import Any
-
 import pandas as pd
 from joblib import dump
 from remlalib.preprocess import Preprocess
@@ -13,19 +11,19 @@ def load_dataset(data_path: str) -> pd.DataFrame:
     return pd.read_csv(data_path, delimiter="\t", quoting=3, header=0)
 
 
-def preprocess(dataset: pd.DataFrame) -> tuple[Any, Any]:
+def preprocess(dataset: pd.DataFrame) -> tuple[list[int], list[int]]:
     """Preprocess the dataset and save it"""
 
     X, y = preprocessor.preprocess_dataset(dataset)
 
-    preprocessed_data_path = "data/preprocessed_data.joblib"
-    dump(X, preprocessed_data_path)
+    preprocessed_data_path = "data/processed/preprocessed_data.joblib"
+    dump([X, y], preprocessed_data_path)
     return X, y
 
 
 def main() -> None:
     """Load the dataset and preprocess it"""
-    dataset = load_dataset("data/RestaurantReviews.tsv")
+    dataset = load_dataset("data/raw/RestaurantReviews.tsv")
     preprocess(dataset)
 
 

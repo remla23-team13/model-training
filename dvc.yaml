@@ -1,24 +1,30 @@
 stages:
   get_data:
-    cmd: python src/get_data.py
+    cmd: python src/data/get_data.py
     deps:
-    - src/get_data.py
+    - src/data/get_data.py
     outs:
-    - data/RestaurantReviews.tsv
+    - data/raw/RestaurantReviews.tsv
   preprocess:
-    cmd: python src/preprocess.py
+    cmd: python src/features/preprocess.py
     deps:
-    - data/RestaurantReviews.tsv
-    - src/preprocess.py
+    - data/raw/RestaurantReviews.tsv
+    - src/features/preprocess.py
     outs:
-    - data/preprocessed_data.joblib
+    - data/processed/preprocessed_data.joblib
   train:
-    cmd: python src/train.py
+    cmd: python src/models/train.py
     deps:
-    - data/RestaurantReviews.tsv
-    - data/preprocessed_data.joblib
-    - src/train.py
+    - data/processed/preprocessed_data.joblib
+    - src/models/train.py
     outs:
     - models/model.joblib
+    - data/test/test_data.joblib
+  evaluate:
+    cmd: python src/models/evaluation.py
+    deps:
+    - data/test/test_data.joblib
+    - models/model.joblib
+    - src/models/evaluation.py
     metrics:
     - metrics/metrics.json

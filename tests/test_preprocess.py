@@ -1,38 +1,37 @@
-import pytest
-import pandas as pd
-from src.preprocess import load_dataset, preprocess
-from pathlib import Path
+"""Test for src/features/preprocess.py"""
 import os
+from pathlib import Path
 
-@pytest.fixture()
-def data():
-    yield load_dataset('data/RestaurantReviews.tsv')
+import pandas as pd
 
-@pytest.fixture()
-def preprocessed_data():
-    processed_data_path = Path("data/preprocessed_data.joblib")
-    if processed_data_path.is_file():
-        os.remove(processed_data_path)
-    data = load_dataset('data/RestaurantReviews.tsv')
-    yield preprocess(data)
+from src.features.preprocess import preprocess
 
-def test_load_data(data):
-    """Test if data is read as DataFrame"""    
+
+def test_load_data(data: pd.DataFrame) -> None:
+    """Test if data is read as DataFrame"""
     assert isinstance(data, pd.DataFrame)
 
 
-def test_load_data_columns(data):
+def test_load_data_columns(data: pd.DataFrame) -> None:
     """Test for expected columns"""
     expected_columns = ["Review", "Liked"]
     assert all(col in data.columns for col in expected_columns)
 
 
-def test_preprocess_length(data, preprocessed_data):
+def test_preprocess_length(
+    data: pd.DataFrame, preprocessed_data: list[list[int]]
+) -> None:
     """Test data length"""
     assert data.shape[0] == len(preprocessed_data[0])
     assert data.shape[1] == len(preprocessed_data)
 
-def test_write_preprocess_data():
-    """Test creation output file"""
-    assert Path("data/preprocessed_data.joblib").is_file()
 
+def test_write_preprocess_data(data: pd.DataFrame) -> None:
+    """Test creation output file"""
+
+    processed_data_path = Path("data/processed/preprocessed_data.joblib")
+    if processed_data_path.is_file():
+        os.remove(processed_data_path)
+
+    preprocess(data)
+    assert processed_data_path.is_file()
