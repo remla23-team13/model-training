@@ -1,7 +1,6 @@
 """Different tests"""
 import json
-
-import train as training
+import src.train as training
 
 
 def test_nondeterminism_robustness() -> None:
