@@ -2,14 +2,12 @@
 
 import random
 
+import nltk
 import pandas as pd
+import pytest
 from nltk.corpus import wordnet
 from remlalib.preprocess import Preprocess
 from sklearn.svm import LinearSVC
-
-# for the first time you use wordnet
-# import nltk
-# nltk.download('wordnet')
 
 
 def get_synonyms(word: str) -> list[str]:
@@ -50,6 +48,8 @@ def test_mutation(
     trained_model: LinearSVC,
 ) -> None:
     """Test labels when a sentence is mutated"""
+    nltk.download("wordnet")
+
     data["mutated_reviews"] = data["Review"].apply(mutate)
 
     mutated_data = pd.DataFrame()
@@ -71,4 +71,4 @@ def test_mutation(
             review = data["Review"].iloc[i]
             mutant_review = mutated_data["Review"].iloc[i]
             print(f"Mutation detected! From : {review}; To: {mutant_review}")
-            # pytest.skip(f"Mutation detected! From : {review}; To: {mutant_review}")
+            pytest.skip(f"Mutation detected! From : {review}; To: {mutant_review}")
