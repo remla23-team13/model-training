@@ -48,13 +48,21 @@ dvc checkout
 The tests rely on files produced by the pipeline, therefore ensure to run the `dvc repro` or `dvc pull` command before running them.
 Afterward, you can run [pytest](https://docs.pytest.org/en/7.3.x/):
 ```bash
+pytest
+```
+
+## Code quality and linting
+This repository uses [mllint](https://github.com/bvobart/mllint) to assess the code quality of the project.
+Mllint runs different kind of linting tools on the code, report the results, ensure that the tests pass and much more (check the mllint documentation for more information).
+To run mllint, execute the following commands:
+```bash
 pytest --junitxml=tests-report.xml --cov=src --cov-report=xml tests/
 mllint
 ```
 The `--junixml` flag creates result files that cna be used by mllint.
 The other two tags indicate the location of the created report (`src`) and the format (`xml`).
 Finally, `tests/` indicates where the tests that are to be run are located.
-If you want to change the name of the test report file, ensure to update the field 'report' in the file `.mllint.yaml` accordingly.
+If you want to change the name of the test report file, ensure to update the field `report` in the file `.mllint.yaml` accordingly.
 
 Although mllint does also run pylint, this does not include dslinter.
 To run this as well use:
