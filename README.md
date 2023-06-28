@@ -46,9 +46,9 @@ dvc checkout
 
 ## Running tests
 The tests rely on files produced by the pipeline, therefore ensure to run the `dvc repro` or `dvc pull` command before running them.
-Afterward, you can run [pytest](https://docs.pytest.org/en/7.3.x/):
+Afterward, you can run [pytest](https://docs.pytest.org/en/7.3.x/), it will publish it's results in the current directory.
 ```bash
-pytest
+pytest --cov=.
 ```
 
 ## Code quality and linting
@@ -75,3 +75,6 @@ src
 This command runs pylint using the dslinter plugin and prints a report (y=yes) of the code in the `src` directory.
 
 This repository follows the [cookiecutter data science](https://drivendata.github.io/cookiecutter-data-science/#directory-structure) guidelines.
+
+## Contributing
+As can be seen in the `.github/workflow/CI.yml` all tests and linters are executed on push and pull-requests, so please run them locally before pushing any new code.
