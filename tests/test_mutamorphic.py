@@ -4,10 +4,33 @@ import random
 
 import nltk
 import pandas as pd
-import pytest
 from nltk.corpus import wordnet
 from remlalib.preprocess import Preprocess
 from sklearn.svm import LinearSVC
+
+
+def test_mutation(
+    data: pd.DataFrame,
+    preprocessor: Preprocess,
+    trained_model: LinearSVC,
+) -> None:
+    """Test labels when a sentence is mutated"""
+    nltk.download("wordnet")
+
+    x_original = [preprocessor.preprocess_sample(row[0]) for row in data.values]
+    predict_original = trained_model.predict(x_original)
+
+    mutated_reviews = [
+        mutate_consistently(row[0], trained_model, preprocessor) for row in data.values
+    ]
+    x_mutated = [preprocessor.preprocess_sample(review) for review in mutated_reviews]
+    predict_mutated = trained_model.predict(x_mutated)
+
+    # make sure mutations have actually been applied
+    assert not (data["Review"].values == mutated_reviews).all()
+
+    # make sure all mutations are consistent
+    assert (predict_mutated == predict_original).all()
 
 
 def get_synonyms(word: str) -> list[str]:
@@ -21,54 +44,52 @@ def get_synonyms(word: str) -> list[str]:
     return list[str](synonyms)
 
 
-def mutate(sentence: str) -> str:
+def mutate(words: list[str], already_tried: list[str]) -> tuple[str, list[str]]:
     """Create a mutant sentence where one word is replaced with a synonum"""
-    words = sentence.split()
 
-    indices = list(range(len(words)))
+    indices = [i for i, word in enumerate(words) if word not in already_tried]
     random.shuffle(indices)
+
+    attempted_words = []
 
     while len(indices) != 0:
         current_index = indices.pop()
         word_to_replace = words[current_index]
 
         synonyms = get_synonyms(word_to_replace)
+        attempted_words.append(word_to_replace)
 
         if len(synonyms) > 0:
             random_synonum = random.choice(synonyms)
             words[current_index] = random_synonum
-            return " ".join(words)
+            break
 
-    return sentence
+    return " ".join(words), attempted_words
 
 
-def test_mutation(
-    data: pd.DataFrame,
-    preprocessed_data: tuple[list[int], list[int]],
-    trained_model: LinearSVC,
-) -> None:
-    """Test labels when a sentence is mutated"""
-    nltk.download("wordnet")
+def mutate_consistently(
+    original_sentence: str, trained_model: LinearSVC, preprocessor: Preprocess
+) -> str:
+    """Try to find mutant that results in same label, if not found return original sentence"""
 
-    data["mutated_reviews"] = data["Review"].apply(mutate)
+    attempted_words: list[str] = []
+    attempt_count = 0
+    words = original_sentence.split()
 
-    mutated_data = pd.DataFrame()
-    mutated_data["Review"] = data["Review"].apply(mutate)
-    mutated_data["Liked"] = data["Liked"]
+    processed_original = preprocessor.preprocess_sample(original_sentence)
+    original_label = trained_model.predict([processed_original])
 
-    preprocessor = Preprocess()
+    while len(attempted_words) <= len(words) and attempt_count < len(words):
+        words = original_sentence.split()
+        mutated_sentence, attempts = mutate(words, attempted_words)
+        attempted_words += attempts
+        sample = preprocessor.preprocess_sample(mutated_sentence)
+        y_pred = trained_model.predict([sample])
 
-    x_original, _ = preprocessed_data
-    predict_original = trained_model.predict(x_original)
+        # check if consistent
+        if y_pred[0] == original_label:
+            return mutated_sentence
 
-    x_mutated, _ = preprocessor.preprocess_dataset(mutated_data)
-
-    predict_mutated = trained_model.predict(x_mutated)
-    for i, (original_label, mutant_label) in enumerate(
-        zip(predict_original, predict_mutated)
-    ):
-        if original_label != mutant_label:
-            review = data["Review"].iloc[i]
-            mutant_review = mutated_data["Review"].iloc[i]
-            print(f"Mutation detected! From : {review}; To: {mutant_review}")
-            pytest.skip(f"Mutation detected! From : {review}; To: {mutant_review}")
+        attempt_count += 1
+    print(f"No mutant that preserves the label can be found for {original_sentence}")
+    return original_sentence
