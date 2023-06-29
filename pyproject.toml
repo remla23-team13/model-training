@@ -2,7 +2,7 @@
 profile = "black"
 
 [tool.mypy]
-exclude = ["venv", "env"]
+exclude = ["venv", "env", "_tmp_dslinter.py"]
 ignore_missing_imports = true
 
 [tool.bandit.assert_used]
