@@ -73,8 +73,9 @@ pylint \
 src
 ```
 This command runs pylint using the dslinter plugin and prints a report (y=yes) of the code in the `src` directory.
+The warnings regarding the use of variables written in mathematical notation, such as X_train and y_train, have been disabled. This modification aims to improve readability and facilitate understanding of the machine learning algorithm.
 
-This repository follows the [cookiecutter data science](https://drivendata.github.io/cookiecutter-data-science/#directory-structure) guidelines.
+The repository follows the [cookiecutter data science](https://drivendata.github.io/cookiecutter-data-science/#directory-structure) guidelines.
 
 ## Contributing
 As can be seen in the `.github/workflow/CI.yml` all tests and linters are executed on push and pull-requests, so please run them locally before pushing any new code.
