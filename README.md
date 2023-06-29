@@ -26,7 +26,8 @@ For more information on DVC either check out the [documentation](https://dvc.org
 For this step it is required to have a Google Drive account. 
 It is possible to pull all the pre-produces artifacts from the remote storage with `dvc pull`. 
 When you execute this command, you will be asked to authenticate with your Google Drive account.
-
+It is possible to change the remote storage of DVC with the following command:```dvc remote add -d myremote /path/to/remote```.
+See DVC [documentation](https://dvc.org/doc/command-reference/remote) for more details.
 ## Tracking experiments
 DVC allows to make modifications to the pipeline and compare the resulting metrics against the current baseline.
 To do so, you could modify one or more of the phases in the pipeline, run the pipeline and observe and compare the results from your experiment.
