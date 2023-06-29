@@ -16,9 +16,8 @@ python3.9 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-You can run the complete pipeline with `dvc repro`, which will pull the needed data (kindly provided by the course staff), preprocess it and train the model. 
-The model can be found at `models/model.joblib` and metrics are saved in `metrics/metrics.json`.
-If parts of the pipeline are changed any intermediate output that can is reused next time it is run. 
+You can run the complete pipeline with `dvc repro`, which will pull the dataset (kindly provided by the course staff), preprocess it and train the model. 
+Once the pipeline has been completely reproduced, the `models` folder will store the resulting model binary.
 By running `dvc dag` you will be able to inspect the stages (nodes) and their dependencies (edges).
 For more information on DVC either check out the [documentation](https://dvc.org/doc) or take a look at the [course material](https://se.ewi.tudelft.nl/remla/material/ML_config_management/). 
 
