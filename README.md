@@ -1,7 +1,7 @@
 # Model-Training
 ![testing_badge](https://github.com/remla23-team13/model-training/actions/workflows/CI.yml/badge.svg?event=pull_request)
 
-[![Coverage Status](https://coveralls.io/repos/github/remla23-team13/model-training/badge.svg?branch=coverage-badge)](https://coveralls.io/github/remla23-team13/model-training?branch=coverage-badge)
+[![Coverage Status](https://coveralls.io/repos/github/remla23-team13/model-training/badge.svg?branch=main)](https://coveralls.io/github/remla23-team13/model-training?branch=main)
 
 This repo trains the models used in the restaurant review project for the [Release Engineering for Machine Learning Application](https://se.ewi.tudelft.nl/remla/) course of the TU Delft.
 See [operation](https://github.com/remla23-team13/operation) for a more detailed view of how the project is setup.
