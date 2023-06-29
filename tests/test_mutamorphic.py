@@ -63,8 +63,8 @@ def mutate(words: list[str], already_tried: list[str]) -> tuple[str, list[str]]:
             random_synonum = random.choice(synonyms)
             words[current_index] = random_synonum
             break
-
-    return " ".join(words), attempted_words
+    original_sentence = " ".join(words)
+    return original_sentence, attempted_words
 
 
 def mutate_consistently(
