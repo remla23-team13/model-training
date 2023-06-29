@@ -9,7 +9,7 @@ dvc==2.58.1
 dvc-gdrive==2.19.2
 pylint==2.17.4
 dslinter==1.1.0
-remlalib
+remlalib==1.1.8
 bandit==1.7.5
 isort==5.12.0
 mypy==1.4.0
